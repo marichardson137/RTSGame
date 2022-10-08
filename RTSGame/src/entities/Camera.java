@@ -1,11 +1,10 @@
 package entities;
 
+import org.joml.Math;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-import toolbox.KeyListener;
 import toolbox.MouseListener;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 public class Camera {
 	
@@ -15,11 +14,11 @@ public class Camera {
 	private float roll = 0;
 	private float FOV = 70;
 	
-	private Player player;
+	private Entity player;
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
 	
-	public Camera(Player player) {
+	public Camera(Entity player) {
 		this.player = player;
 	}
 	
@@ -104,6 +103,17 @@ public class Camera {
 	
 	public float getFOV() {
 		return FOV;
+	}
+	
+	public Matrix4f createViewMatrix() {
+		Matrix4f viewMatrix = new Matrix4f();
+		viewMatrix.identity();
+		viewMatrix.rotate((float) Math.toRadians(getPitch()), new Vector3f(1, 0, 0));
+		viewMatrix.rotate((float) Math.toRadians(getYaw()), new Vector3f(0, 1, 0));
+		Vector3f cameraPos = getPosition();
+		Vector3f negativeCameraPos = new Vector3f(-cameraPos.x,-cameraPos.y,-cameraPos.z);
+		viewMatrix.translate(negativeCameraPos);
+		return viewMatrix;
 	}
 	
 	

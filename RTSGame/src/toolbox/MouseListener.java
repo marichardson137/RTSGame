@@ -2,6 +2,12 @@ package toolbox;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+
+/**
+ * Class used to handle mouse events such as position, button callbacks, and scroll.
+ * 
+ * @author michaelrichardson
+ */
 public class MouseListener {
     private static MouseListener instance; // Singleton
     private double scrollX, scrollY;

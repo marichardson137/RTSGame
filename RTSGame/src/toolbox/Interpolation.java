@@ -2,6 +2,12 @@ package toolbox;
 
 import org.joml.*;
 
+/**
+ * Class used for interpolation of various objects. Contains strictly static and
+ * helper methods. Compares to and compliments the Maths class.
+ * 
+ * @author michaelrichardson
+ */
 public class Interpolation {
 
     // Precise method, which guarantees v = v1 when t = 1. This method is monotonic only when v0 * v1 < 0. Lerping between same values might not produce the same value
@@ -15,6 +21,7 @@ public class Interpolation {
     	return v0 + t * (v1 - v0);
     }
     
+    // 3D Vector Linear Interpolation
     public static Vector3f vectorLerp(Vector3f a, Vector3f b, float t) {
     	return new Vector3f(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t));
     }

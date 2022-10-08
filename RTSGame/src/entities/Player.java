@@ -1,19 +1,17 @@
 package entities;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import models.TexturedModel;
-import renderEngine.Window;
-import terrains.Terrain;
+import main.Window;
 import toolbox.KeyListener;
-import toolbox.Maths;
 
 public class Player extends Entity {
 	
@@ -33,7 +31,13 @@ public class Player extends Entity {
 		super(model, position, rotX, rotY, rotZ, scale);
 	}
 	
-	public void move(Terrain terrain) {
+	@Override
+	public void update() {
+		move();
+		super.update();
+	}
+	
+	public void move() {
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * Window.getFrameTimeSeconds(), 0);
 		float distance = currentSpeed * Window.getFrameTimeSeconds();
@@ -43,11 +47,10 @@ public class Player extends Entity {
 		upwardsSpeed += GRAVITY * Window.getFrameTimeSeconds();
 		super.increasePosition(0, upwardsSpeed * Window.getFrameTimeSeconds(), 0);
 		
-		float terrainHeight = terrain.getHeightOfTerrain(super.getPosition().x, super.getPosition().z);
-		if (super.getPosition().y < terrainHeight + this.getScale()) {
+		if (super.getPosition().y < TERRAIN_HEIGHT + this.getScale()) {
 			upwardsSpeed = 0;
 			isInAir = false;
-			super.getPosition().y = terrainHeight + this.getScale();
+			super.getPosition().y = TERRAIN_HEIGHT + this.getScale();
 		}
 		
 //		Vector3f normal = terrain.getNormalOfTerrain(super.getPosition().x, super.getPosition().z);	

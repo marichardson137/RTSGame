@@ -3,6 +3,11 @@ package toolbox;
 import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
+/**
+ * Class used to handle key input and callbacks
+ * 
+ * @author michaelrichardson
+ */
 public class KeyListener {
     private static KeyListener instance; // Singleton
     private boolean keyPressed[] = new boolean[350];

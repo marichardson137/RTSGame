@@ -9,23 +9,70 @@ import models.TexturedModel;
 
 /**
  * Abstract class used to define the structure of an Entity. Keeps track of the entity's position,
- * rotation, and scale. Also possesses a MODEL which is used for rendering purposes. Contains XXXX
- * abstract methods that are used for XXXXX.
+ * rotation, and scale. Also possesses a TexturedModel which is used for rendering purposes. Contains 
+ * XXXX abstract methods that are used for XXXXX.
  * 
  * @author michaelrichardson
  */
-public abstract class Entity {
+public class Entity {
+	
+	private TexturedModel model;
+	private int textureIndex;
 
 	private Vector3f position;
 	private float rotX, rotY, rotZ;
 	private float scale;
-		
-	public Entity(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+	
+	private Bounds bounds = null;
+	
+	/**
+	 * Default constructor for an entity with its TexturedModel and transformation data
+	 */
+	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		this.model = model;
 		this.position = position;
 		this.rotX = rotX;
 		this.rotY = rotY;
 		this.rotZ = rotZ;
 		this.scale = scale;
+	}
+	
+	/**
+	 * Used for TextureModels that use multiple unique textures
+	 */
+	public Entity(TexturedModel model, int index, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+		this.model = model;
+		this.textureIndex = index;
+		this.position = position;
+		this.rotX = rotX;
+		this.rotY = rotY;
+		this.rotZ = rotZ;
+		this.scale = scale;
+	} 
+	
+	public void update() {
+		getBounds().setPosition(this.position);
+		getBounds().updateMinMax();
+	}
+	
+	public void increasePosition(float dx, float dy, float dz) {
+		this.position.x += dx;
+		this.position.y += dy;
+		this.position.z += dz;
+	}
+	
+	public void increaseRotation(float dx, float dy, float dz) {
+		this.rotX += dx;
+		this.rotY += dy;
+		this.rotZ += dz;
+	}
+	
+	public void setBounds(Vector3f dimensions) {
+		this.bounds = new BoundingBox(this, dimensions);
+	}
+	
+	public void setBounds(float radius) {
+		this.bounds = new BoundingSphere(radius);
 	}
 	
 	public Bounds getBounds() {
@@ -42,18 +89,6 @@ public abstract class Entity {
 		return (float) row/(float)model.getTexture().getNumberOfRows();
 	}
 	
-	public void increasePosition(float dx, float dy, float dz) {
-		this.position.x += dx;
-		this.position.y += dy;
-		this.position.z += dz;
-	}
-	
-	public void increaseRotation(float dx, float dy, float dz) {
-		this.rotX += dx;
-		this.rotY += dy;
-		this.rotZ += dz;
-	}
-
 	public TexturedModel getModel() {
 		return model;
 	}
