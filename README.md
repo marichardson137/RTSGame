@@ -5,4 +5,5 @@
 - **Add basic terrain**
 - **Refactor camera to use non-follow T.P. + mouse movement**
 
-> You can do it
+> Goal 1: one class performs one functionality with limited dependencies
+> Goal 2: limit redundant and unnecessary code 
