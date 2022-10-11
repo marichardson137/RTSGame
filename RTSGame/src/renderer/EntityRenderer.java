@@ -21,9 +21,9 @@ public class EntityRenderer {
 	private StaticShader shader;
 	public Matrix4f projectionMatrix;
 	
-	public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
+	public EntityRenderer(StaticShader shader) {
 		this.shader = shader;
-		this.projectionMatrix = projectionMatrix;
+		this.projectionMatrix = new Matrix4f();
 		shader.start();
 		shader.stop();
 	}

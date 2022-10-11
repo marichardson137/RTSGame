@@ -39,7 +39,7 @@ public class MasterRenderer {
 	
 	public MasterRenderer(Loader loader, Camera camera) {
 		enableCulling();
-		renderer = new EntityRenderer(shader, projectionMatrix);
+		renderer = new EntityRenderer(shader);
 		createProjectionMatrix(camera);
 	}
 	

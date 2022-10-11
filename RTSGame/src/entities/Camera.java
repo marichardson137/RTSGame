@@ -31,16 +31,6 @@ public class Camera {
 		calculateCameraPositionThird(horizontalDistance, verticalDistance);
 		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 	}
-	
-//    public void ProcessMouseScroll(float yOffset)
-//    {
-//        // yOffset *= 0.05f;
-//        FOV += (float) yOffset;
-//        if (FOV < 5.0f)
-//        	FOV = 5.0f;
-//        if (FOV > 70.0f)
-//        	FOV = 70.0f; 
-//    }
     
     // Third-Person Camera
     public void calculateZoom() {

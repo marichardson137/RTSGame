@@ -44,6 +44,9 @@ public class MainGameLoop {
 	
 	// Entities
 	
+	// Terrain
+	Entity terrain1 = createNewEntity("squareTerrain", "mintGreen", 0, 0, 0);
+	
     // Camera
     Camera camera = new Camera(player);
     
@@ -68,6 +71,7 @@ public class MainGameLoop {
 		
     	// Entities
 
+    	// Terrain
     	
     	
 	}
@@ -79,6 +83,7 @@ public class MainGameLoop {
         camera.move();
 
         renderer.processEntity(player);
+        renderer.processEntity(terrain1);
         
         renderer.render(lights, camera);
         
