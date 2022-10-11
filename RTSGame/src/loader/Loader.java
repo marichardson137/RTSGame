@@ -89,7 +89,7 @@ public class Loader {
 	
 	public int loadTexture(String fileName) {
 		
-		String filepath = "res/textures/" + fileName + ".png";
+		String filepath = "res/" + fileName + ".png";
 		 
         // Generate the texture on GPU and bind it
         int texID = glGenTextures();

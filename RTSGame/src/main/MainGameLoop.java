@@ -1,6 +1,6 @@
 package main;
 
-import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
 import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
@@ -21,7 +21,10 @@ import loader.OBJLoader;
 import models.RawModel;
 import models.TexturedModel;
 import renderer.MasterRenderer;
+import terrain.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 import toolbox.KeyListener;
 
 /**
@@ -46,7 +49,7 @@ public class MainGameLoop {
 	Entity tree = createNewEntity("pineTree", "pineTree", 0,0,0);
 	
 	// Terrain
-	Entity terrain1 = createNewEntity("squareTerrain", "mintGreen", 0, 0, 0);
+	Terrain terrain1;
 	
     // Camera
     Camera camera = new Camera(player);
@@ -76,7 +79,10 @@ public class MainGameLoop {
     	tree.getModel().getTexture().setShineDamper(0.2f);
 
     	// Terrain
-    	
+        Terrain[] terrainList = new Terrain[4];
+    	terrain1 = createNewTerrain(-1, -1, "grass", "grass", "grass", "grass", "blendMap", "heightMap");
+    	terrainList[0] = terrain1;
+    	// picker.uploadTerrains(terrainList)
     	
 	}
 	
@@ -85,10 +91,13 @@ public class MainGameLoop {
         player.update();
         
         camera.move();
-
-        renderer.processEntity(tree);
-        renderer.processEntity(terrain1);
         
+        // Entities
+        renderer.processEntity(tree);
+        
+        // Terrain
+        renderer.processTerrain(terrain1);
+  
         renderer.render(lights, camera);
         
 	}
@@ -99,17 +108,30 @@ public class MainGameLoop {
 	
 	private Entity createNewEntity(String objFile, String texFile, float posX, float posY, float posZ) {
 		RawModel entityModel = OBJLoader.loadObjModel(objFile, loader);
-	    TexturedModel entityTexturedModel = new TexturedModel(entityModel, new ModelTexture(loader.loadTexture(texFile)));
+	    TexturedModel entityTexturedModel = new TexturedModel(entityModel, new ModelTexture(loader.loadTexture("entities/textures/" + texFile)));
 	    Entity entity = new Entity(entityTexturedModel, new Vector3f(posX,posY,posZ),0,0,0,1);
 	    return entity;
 	}
 	
 	private Player createNewPlayer(String objFile, String texFile, float posX, float posY, float posZ) {
 		RawModel entityModel = OBJLoader.loadObjModel(objFile, loader);
-	    TexturedModel entityTexturedModel = new TexturedModel(entityModel, new ModelTexture(loader.loadTexture(texFile)));
+	    TexturedModel entityTexturedModel = new TexturedModel(entityModel, new ModelTexture(loader.loadTexture("entities/textures/" + texFile)));
 	    Player player = new Player(entityTexturedModel, new Vector3f(posX,posY,posZ),0,0,0,1);
 	    return player;
 	}
+	
+	private Terrain createNewTerrain(int posX, int posZ, String backgroundTex, String rTex, String gTex, 
+									 String bTex, String blendMap, String heightMap) {
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("terrain/textures/" + backgroundTex));
+        TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("terrain/textures/" + rTex));
+        TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("terrain/textures/"+ gTex));
+        TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("terrain/textures/" + bTex));
+        TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+        TerrainTexture blend = new TerrainTexture(loader.loadTexture("terrain/blend_maps/" + blendMap));
+        Terrain terrain = new Terrain(posX, posZ, loader, texturePack, blend, heightMap);
+        return terrain;
+	}
+	
 	
 	private void processInput() {
 		

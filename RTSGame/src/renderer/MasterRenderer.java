@@ -1,7 +1,6 @@
 package renderer;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,8 @@ import loader.Loader;
 import main.Window;
 import models.TexturedModel;
 import shaders.StaticShader;
+import terrain.Terrain;
+import terrain.TerrainShader;
 
 /**
  * The main render class used to manage the sub-renderers and adjust settings for specific objects.
@@ -34,12 +35,17 @@ public class MasterRenderer {
 	
 	private StaticShader shader = new StaticShader();
 	private EntityRenderer renderer;
+	
+	private TerrainShader terrainShader = new TerrainShader();
+	private TerrainRenderer terrainRenderer;
 
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
 	public MasterRenderer(Loader loader, Camera camera) {
 		enableCulling();
 		renderer = new EntityRenderer(shader);
+		terrainRenderer = new TerrainRenderer(terrainShader);
 		createProjectionMatrix(camera);
 	}
 	
@@ -62,6 +68,13 @@ public class MasterRenderer {
 		shader.loadSkyColor(RED, GREEN, BLUE);
 		renderer.render(entities);
 		shader.stop();
+		
+		terrainShader.start();
+		terrainShader.loadLights(lights);
+		terrainShader.loadViewMatrix(camera);
+		terrainShader.loadSkyColor(RED, GREEN, BLUE);
+		terrainRenderer.render(terrains);
+		terrainShader.stop();
 
 		entities.clear();
 	}
@@ -76,6 +89,10 @@ public class MasterRenderer {
 			newBatch.add(entity);
 			entities.put(entityModel, newBatch);
 		}
+	}
+	
+	public void processTerrain(Terrain terrain) {
+		terrains.add(terrain);
 	}
 	
 	public void prepare() {
@@ -95,6 +112,7 @@ public class MasterRenderer {
 //		projectionMatrix.ortho(-xOrtho, xOrtho, -yOrtho, yOrtho, -100f, 1000.0f); // left, right, bottom, top, front, back (creates a cubic frustum)
 		
 		renderer.projectionMatrix = projectionMatrix;
+		terrainRenderer.projectionMatrix = projectionMatrix;
 
 	}
 	
@@ -104,6 +122,7 @@ public class MasterRenderer {
 	
 	public void cleanUp() { 
 		shader.cleanUp();
+		terrainShader.cleanUp();
 	}
 	
 

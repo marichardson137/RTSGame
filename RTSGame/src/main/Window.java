@@ -65,7 +65,7 @@ public class Window {
     private Window() {
         Window.WIDTH = 1920;
         Window.HEIGHT = 1080;
-        this.title = "Test";
+        this.title = "RTSGame";
     }
 
     // Singleton
@@ -175,7 +175,7 @@ public class Window {
             if (deltaTime >= 1.0 / 30.0f) {
             	String FPS = "FPS :: " + (int)((1.0 / deltaTime) * frameCount);
             	String ms = "ms :: " + (deltaTime / frameCount) * 1000;
-            	String newTitle = "MINI - " + FPS + " / " + ms;
+            	String newTitle = title +  " - " + FPS + " | " + ms;
             	glfwSetWindowTitle(glfwWindow, newTitle);
                 lastFrameTime = currentFrameTime;
                 frameCount = 0;

@@ -33,16 +33,15 @@ public class Camera {
 	}
 	
 	public void move() {
-		calculateFOV();
 				
-//		calculatePitch();
 //		calculateAngleAroundPlayer();
 //		float horizontalDistance = calculateHorizontalDistance();
 //		float verticalDistance = calculateVerticalDistance();
 //		calculateCameraPositionThird(horizontalDistance, verticalDistance);
 //		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 
-		
+		calculateFOV();
+		calculatePitch();
 		calculateDragHorizontal();
 		calculateDragVertical();
 		
@@ -63,13 +62,13 @@ public class Camera {
         }
     }
     public void calculatePitch() {
-         if (MouseListener.mouseButtonDown(0)) {
+         if (MouseListener.mouseButtonDown(1)) {
             float pitchChange = MouseListener.getDy() * 0.1f;
-            pitch += pitchChange;
+            pitch -= pitchChange;
             if (pitch > 65.0f)
             	pitch = 65.0f;
-            if (pitch < -20.0f)
-            	pitch = -20.0f;
+            if (pitch < 25.0f)
+            	pitch = 25.0f;
          }
     }
     public void calculateAngleAroundPlayer() {
@@ -96,14 +95,14 @@ public class Camera {
     
     // Drag-Static Camera
     private void calculateDragHorizontal() {
-    	if (MouseListener.mouseButtonDown(0)) {
+    	if (MouseListener.mouseButtonDown(2)) {
             float dragHorizontal = MouseListener.getDx() * 0.1f;
             position.x -= dragHorizontal * Math.cos(Math.toRadians(yaw));
             position.z -= dragHorizontal * Math.sin(Math.toRadians(yaw));
     	}
     }
     private void calculateDragVertical() {
-    	if (MouseListener.mouseButtonDown(0)) {
+    	if (MouseListener.mouseButtonDown(2)) {
             float dragVertical = MouseListener.getDy() * 0.1f;
             position.x -= dragVertical * Math.cos(Math.toRadians(-yaw));
             position.z -= dragVertical * Math.sin(Math.toRadians(-yaw));
@@ -116,6 +115,7 @@ public class Camera {
         if (FOV > 80.0f)
         	FOV = 80.0f; 
     }
+
     
     private void calculateDirection() {
     	position.sub(player.getPosition(), direction);
