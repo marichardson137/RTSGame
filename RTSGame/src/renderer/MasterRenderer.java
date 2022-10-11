@@ -87,8 +87,15 @@ public class MasterRenderer {
 	private void createProjectionMatrix(Camera camera) {
 		projectionMatrix = new Matrix4f();
 		projectionMatrix.identity();
+		
 		projectionMatrix.perspective((float)Math.toRadians(camera.getFOV()), (float)Window.WIDTH / Window.HEIGHT, NEAR_PLANE, FAR_PLANE);
+	
+//		float xOrtho = 1920.0f / camera.getFOV();
+//		float yOrtho = 1080.0f / camera.getFOV();
+//		projectionMatrix.ortho(-xOrtho, xOrtho, -yOrtho, yOrtho, -100f, 1000.0f); // left, right, bottom, top, front, back (creates a cubic frustum)
+		
 		renderer.projectionMatrix = projectionMatrix;
+
 	}
 	
 	public Matrix4f getProjectionMatrix() {

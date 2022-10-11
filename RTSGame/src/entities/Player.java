@@ -1,12 +1,5 @@
 package entities;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-
 import org.joml.Vector3f;
 
 import models.TexturedModel;
@@ -38,7 +31,7 @@ public class Player extends Entity {
 	}
 	
 	public void move() {
-		checkInputs();
+		processInput();
 		super.increaseRotation(0, currentTurnSpeed * Window.getFrameTimeSeconds(), 0);
 		float distance = currentSpeed * Window.getFrameTimeSeconds();
 		float dx = distance * (float) Math.sin(Math.toRadians(super.getRotY()));
@@ -67,24 +60,24 @@ public class Player extends Entity {
 		}
 	}			
 	
-	private void checkInputs() {
-		if (KeyListener.isKeyPressed(GLFW_KEY_W)) {
-			this.currentSpeed = RUN_SPEED;
-		} else if (KeyListener.isKeyPressed(GLFW_KEY_S)) {
-			this.currentSpeed = -RUN_SPEED;		
-		} else {
-			this.currentSpeed = 0;
-		}
-		if (KeyListener.isKeyPressed(GLFW_KEY_D)) {
-			this.currentTurnSpeed = -TURN_SPEED;
-		} else if (KeyListener.isKeyPressed(GLFW_KEY_A)) {
-			this.currentTurnSpeed = TURN_SPEED;
-		} else {
-			this.currentTurnSpeed = 0;
-		}
-		if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
-			jump();
-		}
+	private void processInput() {
+//		if (KeyListener.isKeyPressed(GLFW_KEY_W)) {
+//			this.currentSpeed = RUN_SPEED;
+//		} else if (KeyListener.isKeyPressed(GLFW_KEY_S)) {
+//			this.currentSpeed = -RUN_SPEED;		
+//		} else {
+//			this.currentSpeed = 0;
+//		}
+//		if (KeyListener.isKeyPressed(GLFW_KEY_D)) {
+//			this.currentTurnSpeed = -TURN_SPEED;
+//		} else if (KeyListener.isKeyPressed(GLFW_KEY_A)) {
+//			this.currentTurnSpeed = TURN_SPEED;
+//		} else {
+//			this.currentTurnSpeed = 0;
+//		}
+//		if (KeyListener.isKeyPressed(GLFW_KEY_SPACE)) {
+//			jump();
+//		}
 	}
 
 }

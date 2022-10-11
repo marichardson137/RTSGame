@@ -1,9 +1,12 @@
 package entities;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 import org.joml.Math;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import toolbox.KeyListener;
 import toolbox.MouseListener;
 
 public class Camera {
@@ -18,18 +21,34 @@ public class Camera {
 	private float distanceFromPlayer = 50;
 	private float angleAroundPlayer = 0;
 	
+	private Vector3f direction;
+	
 	public Camera(Entity player) {
 		this.player = player;
+		direction = new Vector3f();
+		
+		position = new Vector3f(20f, 30f, 20f);
+		pitch = 45f;
+		yaw = -45f;
 	}
 	
 	public void move() {
-		calculateZoom();
-		calculatePitch();
-		calculateAngleAroundPlayer();
-		float horizontalDistance = calculateHorizontalDistance();
-		float verticalDistance = calculateVerticalDistance();
-		calculateCameraPositionThird(horizontalDistance, verticalDistance);
-		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+		calculateFOV();
+				
+//		calculatePitch();
+//		calculateAngleAroundPlayer();
+//		float horizontalDistance = calculateHorizontalDistance();
+//		float verticalDistance = calculateVerticalDistance();
+//		calculateCameraPositionThird(horizontalDistance, verticalDistance);
+//		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+
+		
+		calculateDragHorizontal();
+		calculateDragVertical();
+		
+		calculateDirection();
+		processInput();
+
 	}
     
     // Third-Person Camera
@@ -74,6 +93,34 @@ public class Camera {
         position.z = player.getPosition().z - offsetZ;
         position.y = player.getPosition().y + verticDistance;
     }
+    
+    // Drag-Static Camera
+    private void calculateDragHorizontal() {
+    	if (MouseListener.mouseButtonDown(0)) {
+            float dragHorizontal = MouseListener.getDx() * 0.1f;
+            position.x -= dragHorizontal * Math.cos(Math.toRadians(yaw));
+            position.z -= dragHorizontal * Math.sin(Math.toRadians(yaw));
+    	}
+    }
+    private void calculateDragVertical() {
+    	if (MouseListener.mouseButtonDown(0)) {
+            float dragVertical = MouseListener.getDy() * 0.1f;
+            position.x -= dragVertical * Math.cos(Math.toRadians(-yaw));
+            position.z -= dragVertical * Math.sin(Math.toRadians(-yaw));
+    	}
+    }
+    private void calculateFOV() {
+        FOV += MouseListener.getScrollY() * 0.6f;
+        if (FOV < 5.0f)
+        	FOV = 5.0f;
+        if (FOV > 80.0f)
+        	FOV = 80.0f; 
+    }
+    
+    private void calculateDirection() {
+    	position.sub(player.getPosition(), direction);
+    	direction.normalize();
+    }
 
 	public Vector3f getPosition() {
 		return position;
@@ -106,6 +153,10 @@ public class Camera {
 		return viewMatrix;
 	}
 	
+	private void processInput() {
+		
+
+	}
 	
 
 }

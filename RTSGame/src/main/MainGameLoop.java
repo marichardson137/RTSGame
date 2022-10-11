@@ -1,6 +1,6 @@
 package main;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
+import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.GL_FILL;
 import static org.lwjgl.opengl.GL11.GL_FRONT_AND_BACK;
 import static org.lwjgl.opengl.GL11.GL_LINE;
@@ -43,6 +43,7 @@ public class MainGameLoop {
 	Player player = createNewPlayer("pineTree", "pineTree", 0,0,0);
 	
 	// Entities
+	Entity tree = createNewEntity("pineTree", "pineTree", 0,0,0);
 	
 	// Terrain
 	Entity terrain1 = createNewEntity("squareTerrain", "mintGreen", 0, 0, 0);
@@ -70,6 +71,9 @@ public class MainGameLoop {
     	player.setBounds(new Vector3f(player.getScale()*2,player.getScale()*2,player.getScale()*2));
 		
     	// Entities
+    	tree.setScale(0.5f);
+    	tree.getModel().getTexture().setReflectivity(0.8f);
+    	tree.getModel().getTexture().setShineDamper(0.2f);
 
     	// Terrain
     	
@@ -82,7 +86,7 @@ public class MainGameLoop {
         
         camera.move();
 
-        renderer.processEntity(player);
+        renderer.processEntity(tree);
         renderer.processEntity(terrain1);
         
         renderer.render(lights, camera);
